@@ -1,4 +1,3 @@
-# pap_arqui
 # Sistema parqueo ruleta con arduino para la materia de arquitectura de computadoras 2021
 - Chávez Hernández, José Miguel
 - Figueroa Contreras, Mateo Abrahan
