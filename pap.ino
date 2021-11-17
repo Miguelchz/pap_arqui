@@ -3,7 +3,7 @@ int retardo = 5;      // Tiempo de retardo en milisegundos (Velocidad del Motor)
 int dato;             // valor recibido en grados
 int numero_pasos = 0; // Valor en grados donde se encuentra el motor
 String leeCadena;     // Almacena la cadena de datos recibida
-int dato_rx;
+
 void setup()
 {
   Serial.begin(9600);  // inicializamos el puerto serie a 9600 baudios
@@ -24,16 +24,39 @@ void loop()
   }
   if (leeCadena.length() > 0)
   {
-    dato_rx = leeCadena.toInt(); // Convierte Cadena de caracteres a Enteros
+    int op = leeCadena.toInt(); // Convierte Cadena de caracteres a Enteros
+    //se le indica cuantos grados debe moverse dependiendo de la posición ingresada
+    switch(op){
+      case 1:
+        dato = 30;
+        break;
+      case 2:
+        dato = 90;
+        break;
+      case 3:
+        dato = 120;
+        break;
+      case 4:
+        dato = -120;
+        break;
+      case 5:
+        dato = -90;
+        break;
+      case 6:
+        dato = -30;
+        break;
+    }
+
     Serial.print(dato);       // Envia valor en Grados
     Serial.print(" Grados --> ");
     delay(retardo);
-    dato = (dato_rx * 1.4222222222); // Ajuste de 512 vueltas a los 360 grados
+    dato = (dato * 1.4222222222); // Ajuste de 512 vueltas a los 360 grados 1.4222222222
     Serial.print(dato);              // Envia valor en Grados
     Serial.println(" pasos");
   }
 
   bool terminado = false; // será true si el primer giro termina para luego regresar a la pasicion de origen
+
   //Mientras el giro continue el while se seguirá ejecutando
   while (!girar_motor(dato))
   {
@@ -56,8 +79,9 @@ void loop()
   //Si terminado es true se regresa el giro a la posicion de origen
   if (terminado == true)
   {
-    Serial.println("regresando a la posicion");
+    delay(3000);
     dato = dato * -1; // se invieten los pasos
+    Serial.println("Si entra");
 
     terminado = false; 
     dato = 0;
@@ -128,24 +152,22 @@ bool girar_motor(int pasos)
 
   while (pasos > numero_pasos)
   { // Girohacia la izquierda en grados
-    Serial.print("<");
+    //Serial.println("giro a la izquierda");
     paso_izq();
     numero_pasos = numero_pasos + 1;
     if (pasos == numero_pasos)
     {
-      Serial.println("terminado");
       return true;
     }
     return false;
   }
   while (pasos < numero_pasos)
   { // Giro hacia la derecha en grados
-    Serial.print(">");
     paso_der();
+    //Serial.println("giro a la derecha");
     numero_pasos = numero_pasos - 1;
     if (pasos == numero_pasos)
     {
-      Serial.println("terminado");
       return true;
     }
     return false;
