@@ -34,10 +34,10 @@ void loop()
         dato = 90;
         break;
       case 3:
-        dato = 120;
+        dato = 150;
         break;
       case 4:
-        dato = -120;
+        dato = -150;
         break;
       case 5:
         dato = -90;
@@ -81,7 +81,7 @@ void loop()
   {
     delay(3000);
     dato = dato * -1; // se invieten los pasos
-    Serial.println("Si entra");
+    //Serial.println("Si entra");
 
     terminado = false; 
     dato = 0;
